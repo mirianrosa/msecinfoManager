@@ -1,10 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package view;
 
 import java.awt.event.KeyEvent;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import javax.swing.JOptionPane;
 import model.bean.Usuario;
 import model.dao.UsuarioLogadoDAO;
@@ -166,17 +166,41 @@ public class TelaLogin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSenhaActionPerformed
 
-    public boolean validarLogin(String usuario, String senha){
-        return usuario.equals("Mirian") && senha.equals("admin");
+    public String hashedPasswd(String senha){        
+        //SecureRandom random = new SecureRandom();
+        //byte[] salt = new byte[16];
+        //random.nextBytes(salt);
+        
+        try {       
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            //md.update(salt);
+            md.update(senha.getBytes());
+            //byte[] resultByteArray = md.digest(senha.getBytes(StandardCharsets.UTF_8));
+            byte[] resultByteArray = md.digest();
+
+            StringBuilder sb = new StringBuilder();
+
+            for (byte b : resultByteArray) {
+                sb.append(String.format("%02x", b));
+            }
+            
+            JOptionPane.showMessageDialog(null, sb.toString());
+
+            return sb.toString();
+            
+        } catch (NoSuchAlgorithmException e) {
+        }
+        
+        return "";
     }
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         
         UsuarioLogadoDAO trylogin = new UsuarioLogadoDAO();
+       
         
-        //Usuario usuario = new Usuario();
-        
-        final Usuario usuario = trylogin.read(txtUsuario.getText(), new String(txtSenha.getPassword()));
+        final Usuario usuario = trylogin.read(txtUsuario.getText(), hashedPasswd(new String(txtSenha.getPassword())));
+        //final Usuario usuario = trylogin.read(txtUsuario.getText(), new String(txtSenha.getPassword()));
         
         if (usuario.isPermissaoFunc() || usuario.isPermissaoForne() || usuario.isPermissaoPaga() || usuario.isPermissaoContra() || usuario.isPermissaoRela() || usuario.isPermissaoUsers()){
 
@@ -200,15 +224,13 @@ public class TelaLogin extends javax.swing.JFrame {
     private void txtSenhaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSenhaKeyPressed
         
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-        
+    
             UsuarioLogadoDAO trylogin = new UsuarioLogadoDAO();
 
-            //Usuario usuario = new Usuario();
-
-            final Usuario usuario = trylogin.read(txtUsuario.getText(), new String(txtSenha.getPassword()));
+            final Usuario usuario = trylogin.read(txtUsuario.getText(), hashedPasswd(new String(txtSenha.getPassword())));
 
             if (usuario.isPermissaoFunc() || usuario.isPermissaoForne() || usuario.isPermissaoPaga() || usuario.isPermissaoContra() || usuario.isPermissaoRela() || usuario.isPermissaoUsers()){
-
+                
                 java.awt.EventQueue.invokeLater(new Runnable() {
 
                 public void run() {

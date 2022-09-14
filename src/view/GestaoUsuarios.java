@@ -1,5 +1,7 @@
 package view;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -57,11 +59,10 @@ public class GestaoUsuarios extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         txtUsername = new javax.swing.JTextField();
-        txtPasswd = new javax.swing.JTextField();
         txtRole = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
+        botaoCadastrar = new javax.swing.JButton();
         botaoAtualizar = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        botaoRemover = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -79,6 +80,7 @@ public class GestaoUsuarios extends javax.swing.JFrame {
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
+        txtPasswd = new javax.swing.JPasswordField();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jUsuarios = new javax.swing.JTable();
@@ -103,10 +105,10 @@ public class GestaoUsuarios extends javax.swing.JFrame {
 
         txtRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione...", "Administrador", "Diretoria", "Analista de Segurança", "Financeiro" }));
 
-        jButton1.setText("Cadastrar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        botaoCadastrar.setText("Cadastrar");
+        botaoCadastrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                botaoCadastrarActionPerformed(evt);
             }
         });
 
@@ -117,10 +119,10 @@ public class GestaoUsuarios extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("Remover");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        botaoRemover.setText("Remover");
+        botaoRemover.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                botaoRemoverActionPerformed(evt);
             }
         });
 
@@ -170,18 +172,18 @@ public class GestaoUsuarios extends javax.swing.JFrame {
                             .addComponent(jLabel2))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtRole, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtUsername)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(txtPasswd, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtRole, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtUsername)))
+                            .addComponent(txtPasswd)))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(botaoCadastrar)
                         .addGap(36, 36, 36)
                         .addComponent(botaoAtualizar)
                         .addGap(29, 29, 29)
-                        .addComponent(jButton3)
+                        .addComponent(botaoRemover)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(59, 59, 59))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
@@ -252,9 +254,9 @@ public class GestaoUsuarios extends javax.swing.JFrame {
                     .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(botaoCadastrar)
                     .addComponent(botaoAtualizar)
-                    .addComponent(jButton3))
+                    .addComponent(botaoRemover))
                 .addGap(28, 28, 28)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -414,7 +416,33 @@ public class GestaoUsuarios extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    public String hashedPasswd(String senha){        
+
+        try {       
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
+           
+            md.update(senha.getBytes());
+            
+            byte[] resultByteArray = md.digest();
+
+            StringBuilder sb = new StringBuilder();
+
+            for (byte b : resultByteArray) {
+                sb.append(String.format("%02x", b));
+            }
+            
+            JOptionPane.showMessageDialog(null, sb.toString());
+
+            return sb.toString();
+            
+        } catch (NoSuchAlgorithmException e) {
+        }
+        
+        return "";
+    }
+    
+    
+    private void botaoCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastrarActionPerformed
         // TODO add your handling code here:
        
         //DefaultTableModel dtmusuarios = (DefaultTableModel)jusuarios.getModel();
@@ -484,7 +512,7 @@ public class GestaoUsuarios extends javax.swing.JFrame {
             UsuarioDAO usuarioDao = new UsuarioDAO();
 
             usuario.setUsername(txtUsername.getText());
-            usuario.setPasswd(txtPasswd.getText());
+            usuario.setPasswd(hashedPasswd(new String(txtPasswd.getPassword())));
             usuario.setRole((String) txtRole.getSelectedItem());
             usuario.setPermissaoFunc(permissaoFunc);
             usuario.setPermissaoForne(permissaoForne);
@@ -501,9 +529,9 @@ public class GestaoUsuarios extends javax.swing.JFrame {
             txtRole.setSelectedItem("Selecione...");
         }
         
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_botaoCadastrarActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void botaoRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoRemoverActionPerformed
         // TODO add your handling code here:
         
         if (jUsuarios.getSelectedRow() != -1){
@@ -525,7 +553,7 @@ public class GestaoUsuarios extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Nenhum usuário foi selecionado!");
         }
         
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_botaoRemoverActionPerformed
 
     private void jUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jUsuariosMouseClicked
         // TODO add your handling code here:
@@ -568,7 +596,7 @@ public class GestaoUsuarios extends javax.swing.JFrame {
             UsuarioDAO usuarioDao = new UsuarioDAO();
 
             usuario.setUsername(txtUsername.getText());
-            usuario.setPasswd(txtPasswd.getText());
+            usuario.setPasswd(hashedPasswd(new String(txtPasswd.getPassword())));
             usuario.setRole((String) txtRole.getSelectedItem());
             
             switch ((String) txtRole.getSelectedItem()) {
@@ -733,9 +761,9 @@ public class GestaoUsuarios extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoAtualizar;
+    private javax.swing.JButton botaoCadastrar;
+    private javax.swing.JButton botaoRemover;
     private javax.swing.JButton botaoVoltarMenu;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -763,7 +791,7 @@ public class GestaoUsuarios extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jUsuarios;
-    private javax.swing.JTextField txtPasswd;
+    private javax.swing.JPasswordField txtPasswd;
     private javax.swing.JComboBox<String> txtRole;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
