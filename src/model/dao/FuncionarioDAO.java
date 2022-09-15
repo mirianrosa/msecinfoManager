@@ -131,6 +131,75 @@ public class FuncionarioDAO {
         }
     }
     
+    public void updatePaga(Funcionario funcionario){
+        
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+        
+        try {
+            
+            stmt = con.prepareStatement("UPDATE funcionarios SET statuspagamento = ? where id = ?");
+            
+            stmt.setString(1, funcionario.getStatuspagamento());  
+            stmt.setInt(2, funcionario.getId());
+            
+            stmt.executeUpdate();
+            
+            JOptionPane.showMessageDialog(null, "Funcionário atualizado com sucesso!");
+              
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao atualizar: " + ex);
+            Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            
+        } finally {
+            
+            ConnectionFactory.closeConnection(con, stmt);
+            
+        }
+    }
+    
+    public List<Funcionario> readPaga(){
+        
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        List<Funcionario> listafuncionarios = new ArrayList<>();
+       
+        try {
+            
+            stmt = con.prepareStatement("SELECT * FROM funcionarios");
+            rs = stmt.executeQuery();
+            
+            while (rs.next()){
+                
+                Funcionario funcionario = new Funcionario();
+                
+                funcionario.setId(rs.getInt("id"));
+                funcionario.setNome(rs.getString("nome"));
+                funcionario.setCpf(rs.getString("cpf"));
+                funcionario.setSalario(rs.getDouble("salario"));
+                funcionario.setStatuspagamento(rs.getString("statuspagamento"));
+                funcionario.setVencimento(rs.getString("vencimento"));
+                listafuncionarios.add(funcionario);
+            }
+              
+        } catch (SQLException ex) {
+            //JOptionPane.showMessageDialog(null, "Erro ao salvar: " + ex);
+            Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "erro");
+
+            
+        } finally {
+            
+            ConnectionFactory.closeConnection(con, stmt, rs);
+            
+        }
+        
+        return listafuncionarios;
+        
+    }
+    
     public void delete(Funcionario funcionario){
         
         Connection con = ConnectionFactory.getConnection();

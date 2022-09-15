@@ -37,7 +37,7 @@ public class GestaoFornecedores extends javax.swing.JFrame {
                 forne.getCnpj(),
                 forne.getFornecimento(),
                 forne.getPreco(),
-                forne.getStatuspagamento(),
+                //forne.getStatuspagamento(),
                 forne.getVencimento()
             });   
         }
@@ -64,9 +64,9 @@ public class GestaoFornecedores extends javax.swing.JFrame {
         txtCnpj = new javax.swing.JFormattedTextField();
         txtFornecimento = new javax.swing.JTextField();
         txtVencimento = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        botaoCadastrar = new javax.swing.JButton();
+        botaoAtualizar = new javax.swing.JButton();
+        botaoRemover = new javax.swing.JButton();
         txtPreco = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -100,24 +100,36 @@ public class GestaoFornecedores extends javax.swing.JFrame {
             ex.printStackTrace();
         }
 
-        jButton1.setText("Cadastrar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+        txtVencimento.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtVencimentoKeyTyped(evt);
             }
         });
 
-        jButton2.setText("Atualizar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        botaoCadastrar.setText("Cadastrar");
+        botaoCadastrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                botaoCadastrarActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Remover");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        botaoAtualizar.setText("Atualizar");
+        botaoAtualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                botaoAtualizarActionPerformed(evt);
+            }
+        });
+
+        botaoRemover.setText("Remover");
+        botaoRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoRemoverActionPerformed(evt);
+            }
+        });
+
+        txtPreco.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPrecoKeyTyped(evt);
             }
         });
 
@@ -129,11 +141,11 @@ public class GestaoFornecedores extends javax.swing.JFrame {
                 .addGap(42, 42, 42)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(botaoCadastrar)
                         .addGap(36, 36, 36)
-                        .addComponent(jButton2)
+                        .addComponent(botaoAtualizar)
                         .addGap(29, 29, 29)
-                        .addComponent(jButton3))
+                        .addComponent(botaoRemover))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6)
@@ -181,9 +193,9 @@ public class GestaoFornecedores extends javax.swing.JFrame {
                     .addComponent(jLabel6))
                 .addGap(49, 49, 49)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(botaoCadastrar)
+                    .addComponent(botaoAtualizar)
+                    .addComponent(botaoRemover))
                 .addContainerGap(133, Short.MAX_VALUE))
         );
 
@@ -192,11 +204,11 @@ public class GestaoFornecedores extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Empresa", "C.N.P.J.", "Fornecimento", "Preço", "Vencimento"
+                "ID", "Empresa", "C.N.P.J.", "Fornecimento", "Preço", "Vencimento"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -309,10 +321,10 @@ public class GestaoFornecedores extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void botaoCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastrarActionPerformed
         // TODO add your handling code here:
         
-        DefaultTableModel dtmFornecedores = (DefaultTableModel)jFornecedores.getModel();
+        //DefaultTableModel dtmFornecedores = (DefaultTableModel)jFornecedores.getModel();
         
         boolean empresaRight;
         boolean cnpjRight;
@@ -327,7 +339,7 @@ public class GestaoFornecedores extends javax.swing.JFrame {
             empresaRight = true;
         }
         
-        if (txtCnpj.getText().equals("   .   .   -  ")){
+        if (txtCnpj.getText().equals("  .   .   /    -  ")){
             cnpjRight = false;
             JOptionPane.showMessageDialog(null, "C.N.P.J. não foi definido!");   
     } else {
@@ -356,10 +368,17 @@ public class GestaoFornecedores extends javax.swing.JFrame {
         }
             
         if (empresaRight && cnpjRight && fornecimentoRight && precoRight && vencimentoRight){
-            Object[] dadosFuncionario = {txtEmpresa.getText(), txtCnpj.getText(), txtFornecimento.getText(), txtPreco.getText() , txtVencimento.getText()};
-            dtmFornecedores.addRow(dadosFuncionario);
             
-            JOptionPane.showMessageDialog(null, "Fornecedor cadastrado com sucesso.");
+            Fornecedor fornecedor = new Fornecedor();
+            FornecedorDAO fornecedorDao = new FornecedorDAO();
+
+            fornecedor.setEmpresa(txtEmpresa.getText());
+            fornecedor.setCnpj(txtCnpj.getText());
+            fornecedor.setFornecimento(txtFornecimento.getText());
+            fornecedor.setPreco(Double.parseDouble(txtPreco.getText()));
+            fornecedor.setVencimento(txtVencimento.getText());
+            fornecedorDao.create(fornecedor);
+            readTable();
             
             txtEmpresa.setText("");
             txtCnpj.setText("");
@@ -369,15 +388,21 @@ public class GestaoFornecedores extends javax.swing.JFrame {
             
         }
         
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_botaoCadastrarActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void botaoRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoRemoverActionPerformed
         // TODO add your handling code here:
         
         if (jFornecedores.getSelectedRow() != -1){
-            DefaultTableModel dtmFornecedores = (DefaultTableModel)jFornecedores.getModel();
-            dtmFornecedores.removeRow(jFornecedores.getSelectedRow());
-            JOptionPane.showMessageDialog(null, "Fornecedor excluído com sucesso.");
+                      
+            Fornecedor fornecedor = new Fornecedor();
+            FornecedorDAO fornecedorDao = new FornecedorDAO();
+
+            fornecedor.setId((int)jFornecedores.getValueAt(jFornecedores.getSelectedRow(),0));
+            fornecedorDao.delete(fornecedor);
+            readTable();            
+
+            //JOptionPane.showMessageDialog(null, "Fornecedor excluído com sucesso.");
             
             txtEmpresa.setText("");
             txtCnpj.setText("");
@@ -389,18 +414,18 @@ public class GestaoFornecedores extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Nenhum fornecedor foi selecionado!");
         }
         
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_botaoRemoverActionPerformed
 
     private void jFornecedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jFornecedoresMouseClicked
         // TODO add your handling code here:
         
         if (jFornecedores.getSelectedRow() != -1){
             
-            txtEmpresa.setText(jFornecedores.getValueAt(jFornecedores.getSelectedRow(), 0).toString());
-            txtCnpj.setText(jFornecedores.getValueAt(jFornecedores.getSelectedRow(), 1).toString());
-            txtFornecimento.setText(jFornecedores.getValueAt(jFornecedores.getSelectedRow(), 2).toString());
-            txtPreco.setText(jFornecedores.getValueAt(jFornecedores.getSelectedRow(), 3).toString());
-            txtVencimento.setText(jFornecedores.getValueAt(jFornecedores.getSelectedRow(), 4).toString());
+            txtEmpresa.setText(jFornecedores.getValueAt(jFornecedores.getSelectedRow(), 1).toString());
+            txtCnpj.setText(jFornecedores.getValueAt(jFornecedores.getSelectedRow(), 2).toString());
+            txtFornecimento.setText(jFornecedores.getValueAt(jFornecedores.getSelectedRow(), 3).toString());
+            txtPreco.setText(jFornecedores.getValueAt(jFornecedores.getSelectedRow(), 4).toString());
+            txtVencimento.setText(jFornecedores.getValueAt(jFornecedores.getSelectedRow(), 5).toString());
            
         }
         
@@ -411,30 +436,44 @@ public class GestaoFornecedores extends javax.swing.JFrame {
         
         if (jFornecedores.getSelectedRow() != -1){
             
-            txtEmpresa.setText(jFornecedores.getValueAt(jFornecedores.getSelectedRow(), 0).toString());
-            txtCnpj.setText(jFornecedores.getValueAt(jFornecedores.getSelectedRow(), 1).toString());
-            txtFornecimento.setText(jFornecedores.getValueAt(jFornecedores.getSelectedRow(), 2).toString());
-            txtPreco.setText(jFornecedores.getValueAt(jFornecedores.getSelectedRow(), 3).toString());
-            txtVencimento.setText(jFornecedores.getValueAt(jFornecedores.getSelectedRow(), 4).toString());
+            txtEmpresa.setText(jFornecedores.getValueAt(jFornecedores.getSelectedRow(), 1).toString());
+            txtCnpj.setText(jFornecedores.getValueAt(jFornecedores.getSelectedRow(), 2).toString());
+            txtFornecimento.setText(jFornecedores.getValueAt(jFornecedores.getSelectedRow(), 3).toString());
+            txtPreco.setText(jFornecedores.getValueAt(jFornecedores.getSelectedRow(), 4).toString());
+            txtVencimento.setText(jFornecedores.getValueAt(jFornecedores.getSelectedRow(), 5).toString());
      
         }
     }//GEN-LAST:event_jFornecedoresKeyReleased
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void botaoAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoAtualizarActionPerformed
         // TODO add your handling code here:
         
         if (jFornecedores.getSelectedRow() != -1){
             
-            jFornecedores.setValueAt(txtEmpresa.getText(), jFornecedores.getSelectedRow(), 0);
-            jFornecedores.setValueAt(txtCnpj.getText(), jFornecedores.getSelectedRow(), 1);
-            jFornecedores.setValueAt(txtFornecimento.getText(), jFornecedores.getSelectedRow(), 2);
-            jFornecedores.setValueAt(txtPreco.getText(), jFornecedores.getSelectedRow(), 3);
-            jFornecedores.setValueAt(txtVencimento.getText(), jFornecedores.getSelectedRow(), 4);
-            JOptionPane.showMessageDialog(null, "Fornecedor atualizado com sucesso.");
+            Fornecedor fornecedor = new Fornecedor();
+            FornecedorDAO fornecedorDao = new FornecedorDAO();
+
+            fornecedor.setEmpresa(txtEmpresa.getText());
+            fornecedor.setCnpj(txtCnpj.getText());
+            fornecedor.setFornecimento(txtFornecimento.getText());
+            fornecedor.setPreco(Double.parseDouble(txtPreco.getText()));
+            fornecedor.setVencimento(txtVencimento.getText());
+            fornecedor.setId((int)jFornecedores.getValueAt(jFornecedores.getSelectedRow(),0));
+            fornecedorDao.update(fornecedor);
+            readTable();
+            
+            //JOptionPane.showMessageDialog(null, "Fornecedor atualizado com sucesso.");
+            
+            txtEmpresa.setText("");
+            txtCnpj.setText("");
+            txtFornecimento.setText("");
+            txtPreco.setText("");
+            txtVencimento.setText("");
+            
         } else {
             JOptionPane.showMessageDialog(null, "Nenhum fornecedor foi selecionado!");
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_botaoAtualizarActionPerformed
 
     private void txtEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmpresaActionPerformed
         // TODO add your handling code here:
@@ -451,6 +490,22 @@ public class GestaoFornecedores extends javax.swing.JFrame {
         
         dispose();
     }//GEN-LAST:event_botaoVoltarMenuActionPerformed
+
+    private void txtPrecoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecoKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if ( ((c < '0') || (c > '9')) && (c != java.awt.event.KeyEvent.VK_BACK_SPACE) && (c != '.')) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtPrecoKeyTyped
+
+    private void txtVencimentoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtVencimentoKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if ( ((c < '0') || (c > '9')) && (c != java.awt.event.KeyEvent.VK_BACK_SPACE)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtVencimentoKeyTyped
 
     /**
      * @param args the command line arguments
@@ -519,10 +574,10 @@ public class GestaoFornecedores extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botaoAtualizar;
+    private javax.swing.JButton botaoCadastrar;
+    private javax.swing.JButton botaoRemover;
     private javax.swing.JButton botaoVoltarMenu;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JTable jFornecedores;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

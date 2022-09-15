@@ -51,6 +51,7 @@ public class MenuInicial extends javax.swing.JFrame {
         setResizable(false);
 
         botaoFuncionarios.setText("Gestão Funcionários");
+        botaoFuncionarios.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         botaoFuncionarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botaoFuncionariosActionPerformed(evt);
@@ -75,6 +76,7 @@ public class MenuInicial extends javax.swing.JFrame {
         );
 
         botaoFornecedores.setText("Gestão Fornecedores");
+        botaoFornecedores.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         botaoFornecedores.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botaoFornecedoresActionPerformed(evt);
@@ -99,6 +101,7 @@ public class MenuInicial extends javax.swing.JFrame {
         );
 
         botaoPagamentos.setText("Gestão Pagamentos");
+        botaoPagamentos.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         botaoPagamentos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botaoPagamentosActionPerformed(evt);
@@ -123,6 +126,7 @@ public class MenuInicial extends javax.swing.JFrame {
         );
 
         botaoContratos.setText("Gestão Contratos");
+        botaoContratos.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         botaoContratos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botaoContratosActionPerformed(evt);
@@ -147,6 +151,7 @@ public class MenuInicial extends javax.swing.JFrame {
         );
 
         botaoRelatorios.setText("Gestão Relatórios");
+        botaoRelatorios.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         botaoRelatorios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botaoRelatoriosActionPerformed(evt);
@@ -171,6 +176,7 @@ public class MenuInicial extends javax.swing.JFrame {
         );
 
         botaoUsuarios.setText("Gestão Usuários");
+        botaoUsuarios.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         botaoUsuarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botaoUsuariosActionPerformed(evt);
@@ -195,6 +201,7 @@ public class MenuInicial extends javax.swing.JFrame {
         );
 
         botaoSair.setText("Fazer Logout");
+        botaoSair.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         botaoSair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botaoSairActionPerformed(evt);
@@ -213,8 +220,8 @@ public class MenuInicial extends javax.swing.JFrame {
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(31, Short.MAX_VALUE)
-                .addComponent(botaoSair)
+                .addContainerGap(21, Short.MAX_VALUE)
+                .addComponent(botaoSair, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16))
         );
 
@@ -299,7 +306,7 @@ public class MenuInicial extends javax.swing.JFrame {
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap(10, Short.MAX_VALUE)
+                .addContainerGap(14, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(64, 64, 64))
         );
@@ -384,7 +391,7 @@ public class MenuInicial extends javax.swing.JFrame {
         
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GestaoFuncionarios(loggedUser).setVisible(true);
+                new GestaoContratos(loggedUser).setVisible(true);
             }
         });
         

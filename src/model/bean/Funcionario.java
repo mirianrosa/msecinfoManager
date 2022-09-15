@@ -14,6 +14,9 @@ public class Funcionario {
     private String cargo;
     private double salario;
     private String admissao;
+    private String statuspagamento;
+    private String vencimento;
+
     
     public int getId() {
         return id;
@@ -77,6 +80,22 @@ public class Funcionario {
 
     public void setAdmissao(String admissao) {
         this.admissao = admissao;
+    }
+    
+    public String getStatuspagamento() {
+        return statuspagamento;
+    }
+
+    public void setStatuspagamento(String statuspagamento) {
+        this.statuspagamento = statuspagamento;
+    }
+
+    public String getVencimento() {
+        return vencimento;
+    }
+
+    public void setVencimento(String vencimento) {
+        this.vencimento = vencimento;
     }
     
 }

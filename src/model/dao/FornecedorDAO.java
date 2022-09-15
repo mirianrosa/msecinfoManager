@@ -99,15 +99,15 @@ public class FornecedorDAO {
         
         try {
             
-            stmt = con.prepareStatement("UPDATE fornecedors SET empresa = ?, cnpj = ?, fornecimento = ?, preco = ?, statuspagamento = ?, vencimento = ? where id = ?");
+            stmt = con.prepareStatement("UPDATE fornecedores SET empresa = ?, cnpj = ?, fornecimento = ?, preco = ?, vencimento = ? where id = ?");
             
             stmt.setString(1, fornecedor.getEmpresa());
             stmt.setString(2, fornecedor.getCnpj());
             stmt.setString(3, fornecedor.getFornecimento());
             stmt.setDouble(4, fornecedor.getPreco());
-            stmt.setString(5, fornecedor.getStatuspagamento()); 
-            stmt.setString(6, fornecedor.getVencimento()); 
-            stmt.setInt(7, fornecedor.getId());
+            //stmt.setString(5, fornecedor.getStatuspagamento()); 
+            stmt.setString(5, fornecedor.getVencimento()); 
+            stmt.setInt(6, fornecedor.getId());
             
             stmt.executeUpdate();
             
@@ -149,6 +149,49 @@ public class FornecedorDAO {
             ConnectionFactory.closeConnection(con, stmt);
             
         }
+    }
+    
+    public List<Fornecedor> readPaga(){
+        
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        List<Fornecedor> listafornecedores = new ArrayList<>();
+       
+        try {
+            
+            stmt = con.prepareStatement("SELECT * FROM fornecedores");
+            rs = stmt.executeQuery();
+            
+            while (rs.next()){
+                
+                Fornecedor fornecedor = new Fornecedor();
+                
+                fornecedor.setId(rs.getInt("id"));
+                fornecedor.setEmpresa(rs.getString("empresa"));
+                fornecedor.setCnpj(rs.getString("cnpj"));
+                fornecedor.setPreco(rs.getDouble("preco"));
+                fornecedor.setStatuspagamento(rs.getString("statuspagamento"));
+                fornecedor.setVencimento(rs.getString("vencimento"));
+                listafornecedores.add(fornecedor);
+          
+            }
+              
+        } catch (SQLException ex) {
+            //JOptionPane.showMessageDialog(null, "Erro: " + ex);
+            Logger.getLogger(FornecedorDAO.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "erro");
+
+            
+        } finally {
+            
+            ConnectionFactory.closeConnection(con, stmt, rs);
+            
+        }
+        
+        return listafornecedores;
+        
     }
     
     public void delete(Fornecedor fornecedor){

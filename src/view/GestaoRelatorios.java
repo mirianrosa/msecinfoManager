@@ -3,7 +3,9 @@ package view;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import model.bean.Contrato;
 import model.bean.Usuario;
+import model.dao.ContratoDAO;
 
 /**
  *
@@ -12,14 +14,32 @@ import model.bean.Usuario;
 public class GestaoRelatorios extends javax.swing.JFrame {
 
     public static Usuario loggedUser;
-        
+
     public GestaoRelatorios(Usuario user) {
-        
         loggedUser = user;
         initComponents();
+        DefaultTableModel dtmContratos = (DefaultTableModel)jContratos.getModel();
+        jContratos.setRowSorter(new TableRowSorter(dtmContratos));
+        readTable();
+    }
+    
+    private void readTable(){
         
-        DefaultTableModel modelo = (DefaultTableModel)jFornecedores.getModel();
-        jFornecedores.setRowSorter(new TableRowSorter(modelo));
+        DefaultTableModel dtmContratos = (DefaultTableModel) jContratos.getModel();
+        dtmContratos.setNumRows(0);
+        ContratoDAO fdao = new ContratoDAO();
+        
+        for (Contrato contra: fdao.read()){
+            
+            dtmContratos.addRow(new Object[]{  
+                contra.getId(),
+                contra.getCliente(),
+                contra.getContrato(),
+                contra.getTipo(),
+                contra.getRelatorio(),
+                contra.getFeedback()
+            });   
+        }
     }
 
     /**
@@ -36,174 +56,177 @@ public class GestaoRelatorios extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        txtContrato = new javax.swing.JTextField();
+        botaoAtualizar = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        txtCliente = new javax.swing.JTextField();
+        txtTipo = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        txtEmpresa = new javax.swing.JTextField();
-        txtCnpj = new javax.swing.JFormattedTextField();
-        txtFornecimento = new javax.swing.JTextField();
-        txtVencimento = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        txtPreco = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtRelatorio = new javax.swing.JTextArea();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        txtFeedback = new javax.swing.JTextArea();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jFornecedores = new javax.swing.JTable();
+        jContratos = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         botaoVoltarMenu = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Gerenciamento de relatórios");
+        jLabel1.setText("Gerenciamento de Relatórios");
 
-        jLabel2.setText("Empresa:");
+        jLabel2.setText("Contrato:");
 
-        jLabel3.setText("C.N.P.J:");
+        jLabel3.setText("Tipo:");
 
-        jLabel4.setText("Fornecimento:");
-
-        jLabel5.setText("Preço:");
-
-        jLabel6.setText("Dia de vencimento:");
-
-        txtEmpresa.addActionListener(new java.awt.event.ActionListener() {
+        txtContrato.setEditable(false);
+        txtContrato.setBackground(new java.awt.Color(204, 204, 204));
+        txtContrato.setText("Selecione um contrato...");
+        txtContrato.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtEmpresaActionPerformed(evt);
+                txtContratoActionPerformed(evt);
             }
         });
 
-        try {
-            txtCnpj.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##.###.###/####-##")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-
-        jButton1.setText("Cadastrar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        botaoAtualizar.setText("Atualizar");
+        botaoAtualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                botaoAtualizarActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Atualizar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jLabel7.setText("Cliente:");
+
+        txtCliente.setEditable(false);
+        txtCliente.setBackground(new java.awt.Color(204, 204, 204));
+        txtCliente.setText("Selecione um contrato...");
+        txtCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                txtClienteActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Remover");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
+        txtTipo.setEditable(false);
+        txtTipo.setBackground(new java.awt.Color(204, 204, 204));
+        txtTipo.setText("Selecione um contrato...");
+
+        jLabel4.setText("Relatório:");
+
+        jLabel8.setText("Feedback do cliente sobre o relatório:");
+
+        txtRelatorio.setColumns(20);
+        txtRelatorio.setRows(5);
+        jScrollPane2.setViewportView(txtRelatorio);
+
+        txtFeedback.setColumns(20);
+        txtFeedback.setRows(5);
+        jScrollPane4.setViewportView(txtFeedback);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(42, 42, 42)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addGap(36, 36, 36)
-                        .addComponent(jButton2)
-                        .addGap(29, 29, 29)
-                        .addComponent(jButton3))
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 120, Short.MAX_VALUE)
+                        .addComponent(jLabel1)
+                        .addGap(106, 106, 106))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2))
+                        .addGap(26, 26, 26))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel4)
                             .addComponent(jLabel2)
-                            .addComponent(jLabel3))
-                        .addGap(18, 18, 18)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel7))
+                        .addGap(39, 39, 39)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtContrato, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtTipo)
+                            .addComponent(txtCliente))
+                        .addGap(26, 26, 26))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtCnpj, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtFornecimento, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtVencimento, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtEmpresa)
-                            .addComponent(txtPreco))))
-                .addGap(47, 47, 47))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(108, 108, 108))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(138, 138, 138)
+                                .addComponent(botaoAtualizar))
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel4))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(49, 49, 49)
+                .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(40, 40, 40)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(txtEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(17, 17, 17)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(19, 19, 19)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(txtFornecimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(txtPreco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtVencimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
-                .addGap(49, 49, 49)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
-                .addContainerGap(133, Short.MAX_VALUE))
+                    .addComponent(txtContrato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(botaoAtualizar))
         );
 
-        jFornecedores.setModel(new javax.swing.table.DefaultTableModel(
+        jContratos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Empresa", "C.N.P.J.", "Fornecimento", "Preço", "Vencimento"
+                "ID", "Cliente", "Contrato", "Tipo", "Relatório", "Feedback"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jFornecedores.addMouseListener(new java.awt.event.MouseAdapter() {
+        jContratos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jFornecedoresMouseClicked(evt);
+                jContratosMouseClicked(evt);
             }
         });
-        jFornecedores.addKeyListener(new java.awt.event.KeyAdapter() {
+        jContratos.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                jFornecedoresKeyReleased(evt);
+                jContratosKeyReleased(evt);
             }
         });
-        jScrollPane1.setViewportView(jFornecedores);
+        jScrollPane1.setViewportView(jContratos);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 887, Short.MAX_VALUE)
+            .addGap(0, 875, Short.MAX_VALUE)
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 875, Short.MAX_VALUE)
-                    .addContainerGap()))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 857, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(12, Short.MAX_VALUE)))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -211,8 +234,8 @@ public class GestaoRelatorios extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 505, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(21, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(18, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -220,7 +243,7 @@ public class GestaoRelatorios extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(10, Short.MAX_VALUE)
+                .addContainerGap(29, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -265,13 +288,10 @@ public class GestaoRelatorios extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(12, Short.MAX_VALUE)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -288,136 +308,70 @@ public class GestaoRelatorios extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jContratosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jContratosMouseClicked
         // TODO add your handling code here:
         
-        DefaultTableModel dtmFornecedores = (DefaultTableModel)jFornecedores.getModel();
-        
-        boolean empresaRight;
-        boolean cnpjRight;
-        boolean fornecimentoRight;
-        boolean vencimentoRight;
-        boolean precoRight;
-        
-        if (txtEmpresa.getText().equals("")){
-            empresaRight = false;
-            JOptionPane.showMessageDialog(null, "Nome da empresa não foi definido!");   
-    } else {
-            empresaRight = true;
-        }
-        
-        if (txtCnpj.getText().equals("   .   .   -  ")){
-            cnpjRight = false;
-            JOptionPane.showMessageDialog(null, "C.N.P.J. não foi definido!");   
-    } else {
-            cnpjRight = true;
-        }
-        
-        if (txtFornecimento.getText().equals("")){
-            fornecimentoRight = false;
-            JOptionPane.showMessageDialog(null, "Tipo de fornecimento não foi definido!");   
-    } else {
-            fornecimentoRight = true;
-        }
-
-        if (txtPreco.getText().equals("")){
-            precoRight = false;
-            JOptionPane.showMessageDialog(null, "Preço não foi definido!");   
-    } else {
-            precoRight = true;
-        }
-        
-        if (txtVencimento.getText().equals("")){
-            vencimentoRight = false;
-            JOptionPane.showMessageDialog(null, "Dia de vencimento não foi definido!");   
-    } else {
-            vencimentoRight = true;
-        }
+        if (jContratos.getSelectedRow() != -1){
             
-        if (empresaRight && cnpjRight && fornecimentoRight && precoRight && vencimentoRight){
-            Object[] dadosFuncionario = {txtEmpresa.getText(), txtCnpj.getText(), txtFornecimento.getText(), txtPreco.getText() , txtVencimento.getText()};
-            dtmFornecedores.addRow(dadosFuncionario);
-            
-            JOptionPane.showMessageDialog(null, "Fornecedor cadastrado com sucesso.");
-            
-            txtEmpresa.setText("");
-            txtCnpj.setText("");
-            txtFornecimento.setText("");
-            txtPreco.setText("");
-            txtVencimento.setText("");
-            
-        }
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-        
-        if (jFornecedores.getSelectedRow() != -1){
-            DefaultTableModel dtmFornecedores = (DefaultTableModel)jFornecedores.getModel();
-            dtmFornecedores.removeRow(jFornecedores.getSelectedRow());
-            JOptionPane.showMessageDialog(null, "Fornecedor excluído com sucesso.");
-            
-            txtEmpresa.setText("");
-            txtCnpj.setText("");
-            txtFornecimento.setText("");
-            txtPreco.setText("");
-            txtVencimento.setText("");
-            
-        } else {
-            JOptionPane.showMessageDialog(null, "Nenhum fornecedor foi selecionado!");
-        }
-        
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jFornecedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jFornecedoresMouseClicked
-        // TODO add your handling code here:
-        
-        if (jFornecedores.getSelectedRow() != -1){
-            
-            txtEmpresa.setText(jFornecedores.getValueAt(jFornecedores.getSelectedRow(), 0).toString());
-            txtCnpj.setText(jFornecedores.getValueAt(jFornecedores.getSelectedRow(), 1).toString());
-            txtFornecimento.setText(jFornecedores.getValueAt(jFornecedores.getSelectedRow(), 2).toString());
-            txtPreco.setText(jFornecedores.getValueAt(jFornecedores.getSelectedRow(), 3).toString());
-            txtVencimento.setText(jFornecedores.getValueAt(jFornecedores.getSelectedRow(), 4).toString());
+            txtCliente.setText(jContratos.getValueAt(jContratos.getSelectedRow(), 1).toString());
+            txtContrato.setText(jContratos.getValueAt(jContratos.getSelectedRow(), 2).toString());
+            txtTipo.setText(jContratos.getValueAt(jContratos.getSelectedRow(), 3).toString());
+            txtRelatorio.setText(jContratos.getValueAt(jContratos.getSelectedRow(), 4).toString());
+            txtFeedback.setText(jContratos.getValueAt(jContratos.getSelectedRow(), 5).toString());
            
         }
         
-    }//GEN-LAST:event_jFornecedoresMouseClicked
+    }//GEN-LAST:event_jContratosMouseClicked
 
-    private void jFornecedoresKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jFornecedoresKeyReleased
+    private void jContratosKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jContratosKeyReleased
         // TODO add your handling code here:
         
-        if (jFornecedores.getSelectedRow() != -1){
+        if (jContratos.getSelectedRow() != -1){
             
-            txtEmpresa.setText(jFornecedores.getValueAt(jFornecedores.getSelectedRow(), 0).toString());
-            txtCnpj.setText(jFornecedores.getValueAt(jFornecedores.getSelectedRow(), 1).toString());
-            txtFornecimento.setText(jFornecedores.getValueAt(jFornecedores.getSelectedRow(), 2).toString());
-            txtPreco.setText(jFornecedores.getValueAt(jFornecedores.getSelectedRow(), 3).toString());
-            txtVencimento.setText(jFornecedores.getValueAt(jFornecedores.getSelectedRow(), 4).toString());
+            txtCliente.setText(jContratos.getValueAt(jContratos.getSelectedRow(), 1).toString());
+            txtContrato.setText(jContratos.getValueAt(jContratos.getSelectedRow(), 2).toString());
+            txtTipo.setText(jContratos.getValueAt(jContratos.getSelectedRow(), 3).toString());
+            txtRelatorio.setText(jContratos.getValueAt(jContratos.getSelectedRow(), 4).toString());
+            txtFeedback.setText(jContratos.getValueAt(jContratos.getSelectedRow(), 5).toString());
      
         }
-    }//GEN-LAST:event_jFornecedoresKeyReleased
+    }//GEN-LAST:event_jContratosKeyReleased
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void botaoAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoAtualizarActionPerformed
         // TODO add your handling code here:
         
-        if (jFornecedores.getSelectedRow() != -1){
+        if (jContratos.getSelectedRow() != -1){
             
-            jFornecedores.setValueAt(txtEmpresa.getText(), jFornecedores.getSelectedRow(), 0);
-            jFornecedores.setValueAt(txtCnpj.getText(), jFornecedores.getSelectedRow(), 1);
-            jFornecedores.setValueAt(txtFornecimento.getText(), jFornecedores.getSelectedRow(), 2);
-            jFornecedores.setValueAt(txtPreco.getText(), jFornecedores.getSelectedRow(), 3);
-            jFornecedores.setValueAt(txtVencimento.getText(), jFornecedores.getSelectedRow(), 4);
-            JOptionPane.showMessageDialog(null, "Fornecedor atualizado com sucesso.");
+            Contrato contrato = new Contrato();
+            ContratoDAO contratoDao = new ContratoDAO();
+            
+            if (txtRelatorio.getText().equals("")){
+                contrato.setRelatorio("Pendente");
+            } else {
+                contrato.setRelatorio(txtRelatorio.getText());
+            }
+            
+            contrato.setFeedback(txtFeedback.getText());
+            contrato.setId((int)jContratos.getValueAt(jContratos.getSelectedRow(),0));
+            contratoDao.updateRela(contrato);
+            readTable();
+            
+            //JOptionPane.showMessageDialog(null, "Contrato atualizado com sucesso.");
+            
+            txtCliente.setText("");
+            txtContrato.setText("");
+            txtTipo.setText("");
+            txtRelatorio.setText("");
+            txtFeedback.setText("");
+            
         } else {
-            JOptionPane.showMessageDialog(null, "Nenhum fornecedor foi selecionado!");
+            JOptionPane.showMessageDialog(null, "Nenhum contrato foi selecionado!");
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_botaoAtualizarActionPerformed
 
-    private void txtEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmpresaActionPerformed
+    private void txtContratoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtContratoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtEmpresaActionPerformed
+    }//GEN-LAST:event_txtContratoActionPerformed
 
     private void botaoVoltarMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoVoltarMenuActionPerformed
         // TODO add your handling code here:
@@ -430,6 +384,10 @@ public class GestaoRelatorios extends javax.swing.JFrame {
         
         dispose();
     }//GEN-LAST:event_botaoVoltarMenuActionPerformed
+
+    private void txtClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtClienteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtClienteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -520,6 +478,70 @@ public class GestaoRelatorios extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -530,26 +552,26 @@ public class GestaoRelatorios extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botaoAtualizar;
     private javax.swing.JButton botaoVoltarMenu;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JTable jFornecedores;
+    private javax.swing.JTable jContratos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JFormattedTextField txtCnpj;
-    private javax.swing.JTextField txtEmpresa;
-    private javax.swing.JTextField txtFornecimento;
-    private javax.swing.JTextField txtPreco;
-    private javax.swing.JTextField txtVencimento;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JTextField txtCliente;
+    private javax.swing.JTextField txtContrato;
+    private javax.swing.JTextArea txtFeedback;
+    private javax.swing.JTextArea txtRelatorio;
+    private javax.swing.JTextField txtTipo;
     // End of variables declaration//GEN-END:variables
 }
