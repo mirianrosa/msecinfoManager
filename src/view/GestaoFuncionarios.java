@@ -138,6 +138,11 @@ public class GestaoFuncionarios extends javax.swing.JFrame {
                 txtSalarioActionPerformed(evt);
             }
         });
+        txtSalario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtSalarioKeyTyped(evt);
+            }
+        });
 
         try {
             txtAdmissao.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
@@ -541,6 +546,13 @@ public class GestaoFuncionarios extends javax.swing.JFrame {
         
         dispose();
     }//GEN-LAST:event_botaoVoltarMenuActionPerformed
+
+    private void txtSalarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSalarioKeyTyped
+        char c = evt.getKeyChar();
+        if ( ((c < '0') || (c > '9')) && (c != java.awt.event.KeyEvent.VK_BACK_SPACE) && (c != '.')) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtSalarioKeyTyped
 
     /**
      * @param args the command line arguments

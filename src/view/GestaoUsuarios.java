@@ -416,13 +416,13 @@ public class GestaoUsuarios extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    public String hashedPasswd(String senha){        
-
+    public String hashedPasswd(String senha){  
+        
         try {       
             MessageDigest md = MessageDigest.getInstance("SHA-512");
-           
+            //md.update(salt);
             md.update(senha.getBytes());
-            
+            //byte[] resultByteArray = md.digest(senha.getBytes(StandardCharsets.UTF_8));
             byte[] resultByteArray = md.digest();
 
             StringBuilder sb = new StringBuilder();
@@ -431,8 +431,6 @@ public class GestaoUsuarios extends javax.swing.JFrame {
                 sb.append(String.format("%02x", b));
             }
             
-            JOptionPane.showMessageDialog(null, sb.toString());
-
             return sb.toString();
             
         } catch (NoSuchAlgorithmException e) {
@@ -465,7 +463,7 @@ public class GestaoUsuarios extends javax.swing.JFrame {
             usernameRight = true;
         }
         
-        if (txtPasswd.getText().equals("")){
+        if (new String(txtPasswd.getPassword()).equals("")){
             passRight = false;
             JOptionPane.showMessageDialog(null, "Senha não foi definida!");   
     } else {
@@ -594,10 +592,10 @@ public class GestaoUsuarios extends javax.swing.JFrame {
             
             Usuario usuario = new Usuario();
             UsuarioDAO usuarioDao = new UsuarioDAO();
-
+            
+            usuario.setId((int)jUsuarios.getValueAt(jUsuarios.getSelectedRow(),0));
             usuario.setUsername(txtUsername.getText());
-            usuario.setPasswd(hashedPasswd(new String(txtPasswd.getPassword())));
-            usuario.setRole((String) txtRole.getSelectedItem());
+            usuario.setRole((String)txtRole.getSelectedItem());
             
             switch ((String) txtRole.getSelectedItem()) {
                 case "Administrador":
@@ -621,7 +619,8 @@ public class GestaoUsuarios extends javax.swing.JFrame {
                     permissaoPaga = true;
                     break;
                 default:
-                  throw new IllegalArgumentException("Role inválida " + txtRole.getSelectedItem());
+                    JOptionPane.showMessageDialog(null, "Erro Role");
+                    throw new IllegalArgumentException("Role inválida " + txtRole.getSelectedItem());
             }
             
             usuario.setPermissaoFunc(permissaoFunc);
@@ -631,9 +630,15 @@ public class GestaoUsuarios extends javax.swing.JFrame {
             usuario.setPermissaoRela(permissaoRela);
             usuario.setPermissaoUsers(permissaoUsers);
             
-            usuarioDao.update(usuario);
-            readTable();            
-
+            if (new String(txtPasswd.getPassword()).equals("")){
+                usuarioDao.updateWithOUTPasswd(usuario);
+                readTable();
+            } else {
+                usuario.setPasswd(hashedPasswd(new String(txtPasswd.getPassword())));
+                usuarioDao.updateWithPasswd(usuario);
+                readTable();
+            }
+           
             //JOptionPane.showMessageDialog(null, "Usuario atualizado com sucesso.");
             
             txtUsername.setText("");
@@ -643,6 +648,7 @@ public class GestaoUsuarios extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, "Nenhum usuário foi selecionado!");
         }
+        
     }//GEN-LAST:event_botaoAtualizarActionPerformed
 
     private void botaoVoltarMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoVoltarMenuActionPerformed

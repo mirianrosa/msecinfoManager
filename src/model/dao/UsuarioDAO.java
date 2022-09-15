@@ -99,7 +99,7 @@ public class UsuarioDAO {
         
     }
     
-    public void update(Usuario usuario){
+    public void updateWithPasswd(Usuario usuario){
         
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null;
@@ -107,7 +107,7 @@ public class UsuarioDAO {
         try {
             
             stmt = con.prepareStatement("UPDATE usuarios_plataforma SET username = ?, passwd = ?, role = ?, permissaoFunc = ?, permissaoForne = ?, permissaoPaga = ?, permissaoContra = ?, permissaoRela = ?, permissaoUsers = ? where id = ?");
-            
+                        
             stmt.setString(1, usuario.getUsername());
             stmt.setString(2, usuario.getPasswd());
             stmt.setString(3, usuario.getRole());
@@ -118,6 +118,40 @@ public class UsuarioDAO {
             stmt.setBoolean(8, usuario.isPermissaoRela());  
             stmt.setBoolean(9, usuario.isPermissaoUsers());  
             stmt.setInt(10, usuario.getId());
+            
+            stmt.executeUpdate();
+            
+            JOptionPane.showMessageDialog(null, "Usuário atualizado com sucesso!");
+              
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao atualizar: " + ex);
+            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            
+        } finally {
+            
+            ConnectionFactory.closeConnection(con, stmt);
+            
+        }
+    }
+    
+    public void updateWithOUTPasswd(Usuario usuario){
+        
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+        
+        try {
+            
+            stmt = con.prepareStatement("UPDATE usuarios_plataforma SET username = ?, role = ?, permissaoFunc = ?, permissaoForne = ?, permissaoPaga = ?, permissaoContra = ?, permissaoRela = ?, permissaoUsers = ? where id = ?");
+            
+            stmt.setString(1, usuario.getUsername());
+            stmt.setString(2, usuario.getRole());
+            stmt.setBoolean(3, usuario.isPermissaoFunc());
+            stmt.setBoolean(4, usuario.isPermissaoForne()); 
+            stmt.setBoolean(5, usuario.isPermissaoPaga());
+            stmt.setBoolean(6, usuario.isPermissaoContra());  
+            stmt.setBoolean(7, usuario.isPermissaoRela());  
+            stmt.setBoolean(8, usuario.isPermissaoUsers());  
+            stmt.setInt(9, usuario.getId());
             
             stmt.executeUpdate();
             

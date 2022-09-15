@@ -1,10 +1,8 @@
 package view;
 
 import java.awt.event.KeyEvent;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import javax.swing.JOptionPane;
 import model.bean.Usuario;
 import model.dao.UsuarioLogadoDAO;
@@ -184,8 +182,6 @@ public class TelaLogin extends javax.swing.JFrame {
                 sb.append(String.format("%02x", b));
             }
             
-            JOptionPane.showMessageDialog(null, sb.toString());
-
             return sb.toString();
             
         } catch (NoSuchAlgorithmException e) {
@@ -197,8 +193,7 @@ public class TelaLogin extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         
         UsuarioLogadoDAO trylogin = new UsuarioLogadoDAO();
-       
-        
+
         final Usuario usuario = trylogin.read(txtUsuario.getText(), hashedPasswd(new String(txtSenha.getPassword())));
         //final Usuario usuario = trylogin.read(txtUsuario.getText(), new String(txtSenha.getPassword()));
         
@@ -215,7 +210,7 @@ public class TelaLogin extends javax.swing.JFrame {
         
         } else {
             
-            JOptionPane.showMessageDialog(null, "Usuário ou senha incorretos!");
+            JOptionPane.showMessageDialog(null, "Usuário e/ou senha incorretos!");
             
         }
         
@@ -242,7 +237,7 @@ public class TelaLogin extends javax.swing.JFrame {
 
             } else {
 
-                JOptionPane.showMessageDialog(null, "Usuário ou senha incorretos!");
+                JOptionPane.showMessageDialog(null, "Usuário e/ou senha incorretos!");
 
             }
 

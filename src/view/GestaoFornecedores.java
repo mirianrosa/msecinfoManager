@@ -3,7 +3,9 @@ package view;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import model.bean.Fornecedor;
 import model.bean.Usuario;
+import model.dao.FornecedorDAO;
 
 /**
  *
@@ -16,8 +18,29 @@ public class GestaoFornecedores extends javax.swing.JFrame {
     public GestaoFornecedores(Usuario user) {
         loggedUser = user;
         initComponents();
-        DefaultTableModel modelo = (DefaultTableModel)jFornecedores.getModel();
-        jFornecedores.setRowSorter(new TableRowSorter(modelo));
+        DefaultTableModel dtmFornecedores = (DefaultTableModel)jFornecedores.getModel();
+        jFornecedores.setRowSorter(new TableRowSorter(dtmFornecedores));
+        readTable();
+    }
+    
+    private void readTable(){
+        
+        DefaultTableModel dtmFornecedores = (DefaultTableModel) jFornecedores.getModel();
+        dtmFornecedores.setNumRows(0);
+        FornecedorDAO fdao = new FornecedorDAO();
+        
+        for (Fornecedor forne: fdao.read()){
+            
+            dtmFornecedores.addRow(new Object[]{  
+                forne.getId(),
+                forne.getEmpresa(),
+                forne.getCnpj(),
+                forne.getFornecimento(),
+                forne.getPreco(),
+                forne.getStatuspagamento(),
+                forne.getVencimento()
+            });   
+        }
     }
 
     /**
