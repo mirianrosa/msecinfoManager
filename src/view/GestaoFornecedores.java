@@ -76,7 +76,7 @@ public class GestaoFornecedores extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Gerenciamento de fornecedores");
+        jLabel1.setText("Gerenciamento de Fornecedores");
 
         jLabel2.setText("Empresa:");
 

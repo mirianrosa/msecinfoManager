@@ -156,7 +156,7 @@ public class GestaoUsuarios extends javax.swing.JFrame {
 
         jLabel19.setText("- Administrador");
 
-        jLabel20.setText("Gerenciar relatórios");
+        jLabel20.setText("Gerenciar usuários");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);

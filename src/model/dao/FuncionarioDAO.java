@@ -76,6 +76,8 @@ public class FuncionarioDAO {
                 funcionario.setCargo(rs.getString("cargo"));
                 funcionario.setSalario(rs.getDouble("salario"));
                 funcionario.setAdmissao(rs.getString("admissao"));
+                funcionario.setStatuspagamento(rs.getString("statuspagamento"));
+                funcionario.setVencimento(rs.getString("vencimento"));
                 listafuncionarios.add(funcionario);
           
             }
@@ -138,10 +140,11 @@ public class FuncionarioDAO {
         
         try {
             
-            stmt = con.prepareStatement("UPDATE funcionarios SET statuspagamento = ? where id = ?");
+            stmt = con.prepareStatement("UPDATE funcionarios SET salario = ?, statuspagamento = ? where id = ?");
             
-            stmt.setString(1, funcionario.getStatuspagamento());  
-            stmt.setInt(2, funcionario.getId());
+            stmt.setDouble(1, funcionario.getSalario()); 
+            stmt.setString(2, funcionario.getStatuspagamento());
+            stmt.setInt(3, funcionario.getId());
             
             stmt.executeUpdate();
             

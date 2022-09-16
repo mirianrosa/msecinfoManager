@@ -131,14 +131,15 @@ public class FornecedorDAO {
         
         try {
             
-            stmt = con.prepareStatement("UPDATE fornecedores SET statuspagamento where id = ?");
+            stmt = con.prepareStatement("UPDATE fornecedores SET preco = ?, statuspagamento = ? where id = ?");
             
-            stmt.setString(1, fornecedor.getStatuspagamento()); 
-            stmt.setInt(2, fornecedor.getId());
+            stmt.setDouble(1, fornecedor.getPreco()); 
+            stmt.setString(2, fornecedor.getStatuspagamento()); 
+            stmt.setInt(3, fornecedor.getId());
             
             stmt.executeUpdate();
             
-            JOptionPane.showMessageDialog(null, "Pagamento do fornecedor atualizado com sucesso!");
+            JOptionPane.showMessageDialog(null, "Atualizado com sucesso!");
               
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro ao atualizar: " + ex);

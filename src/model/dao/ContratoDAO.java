@@ -143,7 +143,7 @@ public class ContratoDAO {
             
             stmt.executeUpdate();
             
-            JOptionPane.showMessageDialog(null, "Relatório e feedback atualizados com sucesso!");
+            JOptionPane.showMessageDialog(null, "Atualizado com sucesso!");
               
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro ao atualizar: " + ex);
@@ -156,47 +156,32 @@ public class ContratoDAO {
         }
     }
     
-    public List<Contrato> readPaga(){
+    public void updatePaga(Contrato contrato){
         
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null;
-        ResultSet rs = null;
         
-        List<Contrato> listacontratos = new ArrayList<>();
-       
         try {
             
-            stmt = con.prepareStatement("SELECT * FROM contratosrelatorios");
-            rs = stmt.executeQuery();
+            stmt = con.prepareStatement("UPDATE contratosrelatorios SET preco = ?, statuspagamento = ? where id = ?");
             
-            while (rs.next()){
-                
-                Contrato contrato = new Contrato();
-                
-                contrato.setId(rs.getInt("id"));
-                contrato.setCliente(rs.getString("cliente"));
-                contrato.setContrato(rs.getString("contrato"));
-                contrato.setPreco(rs.getDouble("preco"));
-                contrato.setStatuspagamento(rs.getString("statuspagamento"));
-                contrato.setVencimento(rs.getString("vencimento"));
-                listacontratos.add(contrato);
-          
-            }
+            stmt.setDouble(1, contrato.getPreco()); 
+            stmt.setString(2, contrato.getStatuspagamento()); 
+            stmt.setInt(3, contrato.getId());
+            
+            stmt.executeUpdate();
+            
+            JOptionPane.showMessageDialog(null, "Atualizado com sucesso!");
               
         } catch (SQLException ex) {
-            //JOptionPane.showMessageDialog(null, "Erro: " + ex);
+            JOptionPane.showMessageDialog(null, "Erro ao atualizar: " + ex);
             Logger.getLogger(ContratoDAO.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "Erro ao ler");
-
             
         } finally {
             
-            ConnectionFactory.closeConnection(con, stmt, rs);
+            ConnectionFactory.closeConnection(con, stmt);
             
         }
-        
-        return listacontratos;
-        
     }
     
     public void delete(Contrato contrato){

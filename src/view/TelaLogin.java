@@ -211,6 +211,8 @@ public class TelaLogin extends javax.swing.JFrame {
         } else {
             
             JOptionPane.showMessageDialog(null, "Usuário e/ou senha incorretos!");
+            txtUsuario.setText("");
+            txtSenha.setText("");
             
         }
         
@@ -238,6 +240,8 @@ public class TelaLogin extends javax.swing.JFrame {
             } else {
 
                 JOptionPane.showMessageDialog(null, "Usuário e/ou senha incorretos!");
+                txtUsuario.setText("");
+                txtSenha.setText("");
 
             }
 
